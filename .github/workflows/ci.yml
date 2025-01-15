@@ -1,0 +1,38 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Vérification du code avec l'action checkout
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Configuration de Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 3. Installation des dépendances
+      - name: Install Dependencies
+        working-directory: ./backend
+        run: npm install
+
+      # 4. Lancer les tests
+      - name: Run Tests
+        working-directory: ./backend
+        run: npm test
+
+      # 5. Construction des images Docker
+      - name: Build Docker Images
+        run: docker-compose build
