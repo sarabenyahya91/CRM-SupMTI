@@ -1,0 +1,43 @@
+services:
+
+  # Backend service (Node.js app)
+  backend:
+    build: ./backend
+    container_name: crm-backend
+    environment:
+      - NODE_ENV=production
+      - DB_NAME=crm_db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_HOST=db
+      - DB_PORT=3306
+      - JWT_SECRET=rsmi4149
+      - PORT=4000
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    networks:
+      - crm-network
+
+  # MySQL service
+  db:
+    image: mysql:8
+    container_name: crm-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: crm_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - crm-network
+
+networks:
+  crm-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
