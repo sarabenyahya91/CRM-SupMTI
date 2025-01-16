@@ -1,5 +1,19 @@
 services:
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: crm-frontend
+    ports:
+      - "3003:80"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - crm-network
   # Backend service (Node.js app)
   backend:
     build: ./backend
