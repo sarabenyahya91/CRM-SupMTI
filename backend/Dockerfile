@@ -11,6 +11,9 @@ RUN npm install
 # Copier le reste des fichiers dans le conteneur
 COPY . .
 
+# Exécuter les tests après le build
+#RUN npm test
+
 # Exposer le port sur lequel le serveur écoute
 EXPOSE 4000
 
