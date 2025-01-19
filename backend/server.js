@@ -1,25 +1,25 @@
 const express = require("express");
+const cors = require("cors");
 const authRoutes = require("./src/routes/auth.routes");
+const clientRoutes = require("./src/routes/client.routes");
 const sequelize = require("./src/config/database");
+require("./src/models/client.model");
 
-
-
-console.log(process.env.DB_NAME);
 // Initialisation de l'application
 const app = express();
-
+app.use(cors());
 // Middleware pour analyser les données JSON
 app.use(express.json());
 
 // Routes
 app.use("/auth", authRoutes);
-
+app.use("/clients", clientRoutes);
 // Configuration du port
 const PORT = process.env.PORT || 4000;
 
 // Route par défaut
 app.get('/', (req, res) => {
-    res.send('Bienvenue dans le backend du CRM !');
+    res.send('Bienvenue dans le backend du SupMTI CRM !');
 });
 
 // Lancement du serveur avec la base de données

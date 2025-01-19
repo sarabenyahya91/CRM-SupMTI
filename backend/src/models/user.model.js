@@ -1,8 +1,8 @@
-// backend/src/models/user.model.js
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+// Modèle User avec les nouveaux champs (nom et téléphone)
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const User = sequelize.define("User", {
+const User = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -20,8 +20,20 @@ const User = sequelize.define("User", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+            is: /^[0-9\-\+]{9,15}$/,
+        },
+    },
 }, {
-    tableName: 'users',  // Assure-toi que le nom de la table est 'users'
+    tableName: 'users',
+    timestamps: true,
 });
 
 module.exports = User;
