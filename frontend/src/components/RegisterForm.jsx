@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import api from '../api/axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Validation Schema avec Yup
 const schema = yup.object().shape({
@@ -35,6 +36,8 @@ const RegisterForm = () => {
         resolver: yupResolver(schema),
     });
 
+    const navigate = useNavigate();
+
     // Fonction de soumission du formulaire
     const onSubmit = async (data) => {
         try {
@@ -44,7 +47,8 @@ const RegisterForm = () => {
                 email: data.email,
                 password: data.password,
             });
-            toast.success(response.data.message || 'Inscription réussie !');
+            toast.success(response.data.message || 'Inscription réussie, vous pouvez maintenant se connecter !');
+            navigate('/login');
         } catch (error) {
             if (error.response && error.response.data) {
                 toast.error(error.response.data.message || 'Erreur d\'inscription');
@@ -56,8 +60,8 @@ const RegisterForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto p-4 bg-white rounded-lg shadow-lg min-w-96">
-            <h2 className="text-2xl font-bold text-gray-800 text-center mb-6 uppercase">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-4 mx-auto bg-white rounded-lg shadow-lg min-w-96">
+            <h2 className="mb-6 text-2xl font-bold text-center text-gray-800 uppercase">
                 Inscription
             </h2>
 
@@ -71,7 +75,7 @@ const RegisterForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
             </div>
 
 
@@ -86,7 +90,7 @@ const RegisterForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
             </div>
 
 
@@ -100,7 +104,7 @@ const RegisterForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
             </div>
 
             {/* Password */}
@@ -113,7 +117,7 @@ const RegisterForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
             </div>
 
             {/* Confirm Password */}
@@ -126,7 +130,7 @@ const RegisterForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.passwordConfirmation ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.passwordConfirmation && <p className="text-red-500 text-sm">{errors.passwordConfirmation.message}</p>}
+                {errors.passwordConfirmation && <p className="text-sm text-red-500">{errors.passwordConfirmation.message}</p>}
             </div>
 
 
@@ -134,11 +138,12 @@ const RegisterForm = () => {
             <div className="mb-4">
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+                    className="w-full p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                 >
                     S'inscrire
                 </button>
             </div>
+            <div className='mb-2'> Vous avez déja un compte ? <Link to="/login" className='text-blue-500'>Se connecter</Link></div>
         </form>
     );
 };

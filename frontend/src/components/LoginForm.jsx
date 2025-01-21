@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import api from '../api/axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Validation Schema avec Yup
 const schema = yup.object().shape({
@@ -24,6 +25,8 @@ const LoginForm = () => {
         resolver: yupResolver(schema),
     });
 
+    const navigate = useNavigate();
+
     // Fonction de soumission du formulaire
     const onSubmit = async (data) => {
         try {
@@ -35,6 +38,8 @@ const LoginForm = () => {
             // Sauvegarder le token JWT
             localStorage.setItem('token', response.data.token);
             toast.success('Connexion réussie !');
+            // Rediriger l'utilisateur vers la page Clients
+            navigate('/clients');
         } catch (error) {
             if (error.response && error.response.data) {
                 toast.error(error.response.data.message || 'Erreur de connexion');
@@ -46,9 +51,9 @@ const LoginForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto p-4 bg-white rounded-lg shadow-lg  min-w-96">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-4 mx-auto bg-white rounded-lg shadow-lg min-w-96">
 
-            <h2 className="text-2xl font-bold text-gray-800 text-center mb-6 uppercase">
+            <h2 className="mb-6 text-2xl font-bold text-center text-gray-800 uppercase">
                 Connexion
             </h2>
             {/* Email */}
@@ -61,7 +66,7 @@ const LoginForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
@@ -74,7 +79,7 @@ const LoginForm = () => {
                     className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
                         }`}
                 />
-                {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
             </div>
 
 
@@ -82,11 +87,12 @@ const LoginForm = () => {
             <div className="mb-4">
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+                    className="w-full p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                 >
                     Se Connecter
                 </button>
             </div>
+            <div className='mb-2'> Vous n'avez pas de compte <Link to="/register" className='text-blue-500'>S'inscrire</Link></div>
         </form>
     );
 };
