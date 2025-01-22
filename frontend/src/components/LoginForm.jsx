@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import api from '../api/axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { LoadingModal } from './Loading';
+import Logo from './Logo';
 
 // Validation Schema avec Yup
 const schema = yup.object().shape({
@@ -25,10 +27,13 @@ const LoginForm = () => {
         resolver: yupResolver(schema),
     });
 
+    const [isLoading, setIsLoading] = React.useState(false);
+
     const navigate = useNavigate();
 
     // Fonction de soumission du formulaire
     const onSubmit = async (data) => {
+        setIsLoading(true);
         try {
             const response = await api.post('/auth/login', {
                 email: data.email,
@@ -46,54 +51,57 @@ const LoginForm = () => {
             } else {
                 toast.error('Une erreur est survenue');
             }
+        } finally {
+            setIsLoading(false);
         }
 
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="p-4 mx-auto bg-white rounded-lg shadow-lg min-w-96">
-
-            <h2 className="mb-6 text-2xl font-bold text-center text-gray-800 uppercase">
-                Connexion
-            </h2>
-            {/* Email */}
-            <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    {...register('email')}
-                    className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                        }`}
-                />
-                {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+        <><LoadingModal isLoading={isLoading} message="Veuillez patienter, votre requête est en cours de traitement..." />
+            <div className='flex flex-col items-center justify-center h-screen space-y-24'>
+                <Logo height="h-16" width="w-72" crm="text-5xl" supmti="text-3xl" />
+                <form onSubmit={handleSubmit(onSubmit)} className="p-4 mx-auto bg-white rounded-lg shadow-lg min-w-96">
+                    <h2 className="mb-6 text-2xl font-bold text-center text-gray-800 uppercase">
+                        Connexion
+                    </h2>
+                    {/* Email */}
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            {...register('email')}
+                            className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                                }`}
+                        />
+                        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+                    </div>
+                    {/* Password */}
+                    <div className="mb-4">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label>
+                        <input
+                            type="password"
+                            id="password"
+                            {...register('password')}
+                            className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                                }`}
+                        />
+                        {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+                    </div>
+                    {/* Submit Button */}
+                    <div className="mb-4">
+                        <button
+                            type="submit"
+                            className="w-full p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                        >
+                            Se Connecter
+                        </button>
+                    </div>
+                    <div className='mb-2'> Vous n'avez pas de compte <Link to="/register" className='text-blue-500'>S'inscrire</Link></div>
+                </form>
             </div>
-
-            {/* Password */}
-            <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label>
-                <input
-                    type="password"
-                    id="password"
-                    {...register('password')}
-                    className={`w-full mt-2 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                        }`}
-                />
-                {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
-            </div>
-
-
-            {/* Submit Button */}
-            <div className="mb-4">
-                <button
-                    type="submit"
-                    className="w-full p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                >
-                    Se Connecter
-                </button>
-            </div>
-            <div className='mb-2'> Vous n'avez pas de compte <Link to="/register" className='text-blue-500'>S'inscrire</Link></div>
-        </form>
+        </>
     );
 };
 

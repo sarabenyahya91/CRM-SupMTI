@@ -17,7 +17,6 @@ const Navbar = () => {
 
     useEffect(() => {
         const decoded = decodeToken();
-        console.log(decoded);
         if (decoded) {
             setUserName(decoded.name || 'Invité'); // Remplace "Utilisateur" par une valeur par défaut si `name` n'existe pas
         }

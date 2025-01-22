@@ -7,6 +7,7 @@ import ClientList from "./pages/Clients";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddClientPage from "./pages/AddClient";
 import EditClientPage from "./pages/EditClient";
+import { Loading, LoadingModal } from "./components/Loading";
 
 function App() {
   const location = useLocation();
@@ -45,6 +46,7 @@ function App() {
         />
 
         <Route path="/" element={<HomePage />} />
+        <Route path="/test" element={<LoadingModal isLoading={true} message="Veuillez patienter votre demande est en cours de traitement" />} />
       </Routes>
 
     </div>
