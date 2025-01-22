@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: crm-frontend
     ports:
-      - "3067:80"
+      - "3000:80"
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -26,7 +26,7 @@ services:
       - JWT_SECRET=rsmi4149
       - PORT=4000
     ports:
-      - "4000:4000"
+      - "3001:4000"
     depends_on:
       db:
         condition: service_healthy
