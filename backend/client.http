@@ -1,0 +1,35 @@
+# Créer un client
+POST http://localhost:4000/clients
+Content-Type: application/json
+
+{
+    "name": "Ahmed Bounnit",
+    "email": "ahmed.bounnit@example.com",
+    "phone": "+212612345679",
+    "address": "12 Rue des Phares, Casablanca",
+    "userId": 2
+}
+###
+
+
+GET http://localhost:4000/clients
+###
+
+# Récupérer un client par ID
+GET http://localhost:4000/clients/23
+###
+# Mettre à jour un client
+PUT http://localhost:4000/clients/23
+Content-Type: application/json
+
+{
+    "name": "Client Test Modifié",
+    "email": "clienttestmodified@example.com",
+    "phone": "+212612345679"
+}
+###
+
+GET http://localhost:4000/clients/user/1
+###
+# Supprimer un client
+DELETE http://localhost:4000/clients/23
