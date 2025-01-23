@@ -76,7 +76,7 @@ const ClientList = () => {
         <div className="min-h-screen p-20 bg-gray-100">
             <div className="container mx-auto">
                 <div className="flex items-center justify-between mb-6">
-                    <h1 className="text-2xl font-semibold text-gray-800">Liste des Clients</h1>
+                    <h1 className="text-2xl font-bold text-orange-600">Liste des Clients</h1>
                     <button
                         onClick={handleAddClient}
                         className="flex items-center px-4 py-2 text-white bg-orange-500 rounded shadow-md hover:bg-blue-700"
