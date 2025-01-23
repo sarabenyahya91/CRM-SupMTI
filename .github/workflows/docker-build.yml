@@ -10,28 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
+      # 1. Vérifier le code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Set up Docker
+      # 2. Configurer Docker
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3. Build and push backend image
+      # 3. Construire et pousser le backend
       - name: Construire et pousser le backend
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/crm-backend ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/crm-backend
 
-      # 4. Build and push frontend image
+      # 4. Construire et pousser le frontend
       - name: Construire et pousser le frontend
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/crm-frontend ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/crm-frontend
-
-        name: Run a simple script
-        run: echo "Hello, GitHub Actions!"
